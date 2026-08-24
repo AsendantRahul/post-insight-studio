@@ -3,9 +3,6 @@
 // Plain JavaScript, no framework, no build step.
 // A 3-step wizard: Upload -> Read -> Improve.
 // ============================================================
-const API_URL = window.location.origin;
-
-// your existing code starts here
 
 const ACCEPTED_TYPES = [
   'application/pdf',
