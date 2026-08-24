@@ -4,6 +4,8 @@
 // A 3-step wizard: Upload -> Read -> Improve.
 // ============================================================
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
 const ACCEPTED_TYPES = [
   'application/pdf',
   'image/png',
@@ -133,6 +135,10 @@ function handleFileChosen(file) {
   if (!file) return;
 
 
+  // ==========================================================
+  // FILE TYPE VALIDATION
+  // ==========================================================
+
   if (!ACCEPTED_TYPES.includes(file.type)) {
 
     showNotice(
@@ -140,9 +146,39 @@ function handleFileChosen(file) {
       'Unsupported file type. Please upload a PDF, PNG, JPEG, or WEBP file.'
     );
 
+    selectedFile = null;
+    toStep2Btn.disabled = true;
+
     return;
   }
 
+
+  // ==========================================================
+  // FILE SIZE VALIDATION
+  // Maximum allowed file size: 10 MB
+  // ==========================================================
+
+  if (file.size > MAX_FILE_SIZE) {
+
+    showNotice(
+      step1Error,
+      'File is too large. Please upload a file of 10 MB or smaller.'
+    );
+
+    selectedFile = null;
+
+    dropzoneText.textContent =
+      'Drag & drop a file, or click to browse';
+
+    toStep2Btn.disabled = true;
+
+    return;
+  }
+
+
+  // ==========================================================
+  // FILE ACCEPTED
+  // ==========================================================
 
   selectedFile = file;
 
