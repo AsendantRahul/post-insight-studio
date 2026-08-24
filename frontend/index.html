@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Social Media Content Analyzer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+
+      <div class="brand">
+        <span class="brand-mark">Post</span>
+        <span class="brand-mark brand-mark-accent">Insight</span>
+        <span class="brand-tag">social content analyzer</span>
+      </div>
+
+      <button id="openHistoryBtn" class="link-btn">
+        Past analyses
+      </button>
+
+    </div>
+  </header>
+
+
+  <main class="wizard">
+
+    <!-- =========================
+         STEP INDICATOR
+    ========================== -->
+
+    <ol id="stepper" class="stepper">
+
+      <li class="step-node active" data-step="1">
+        <span class="step-circle">1</span>
+        <span class="step-label">Upload</span>
+      </li>
+
+      <li class="step-node" data-step="2">
+        <span class="step-circle">2</span>
+        <span class="step-label">Read</span>
+      </li>
+
+      <li class="step-node" data-step="3">
+        <span class="step-circle">3</span>
+        <span class="step-label">Improve</span>
+      </li>
+
+    </ol>
+
+
+    <!-- =========================
+         STEP 1 : UPLOAD
+    ========================== -->
+
+    <section id="panel-1" class="panel active">
+
+      <h1 class="panel-title">
+        Upload your post
+      </h1>
+
+      <p class="panel-lede">
+        Drop in a PDF or a photo/screenshot of your caption.
+        We'll pull the text out and score it for engagement.
+      </p>
+
+
+      <!-- DROPZONE -->
+
+      <div id="dropzone" class="dropzone">
+
+        <input
+          type="file"
+          id="fileInput"
+          accept=".pdf,.png,.jpg,.jpeg,.webp"
+          hidden
+        />
+
+        <p id="dropzoneText" class="dropzone-text">
+          Drag &amp; drop a file, or click to browse
+        </p>
+
+        <p class="dropzone-hint">
+          PDF, PNG, JPEG, WEBP — up to 10MB
+        </p>
+
+      </div>
+
+
+      <!-- PLATFORM SELECTOR -->
+
+      <div class="platform-selector">
+
+        <label for="platformSelect">
+          Analyze for
+        </label>
+
+        <select id="platformSelect">
+
+          <option value="Instagram">
+            Instagram
+          </option>
+
+          <option value="LinkedIn">
+            LinkedIn
+          </option>
+
+          <option value="X">
+            X (Twitter)
+          </option>
+
+          <option value="Facebook">
+            Facebook
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="step1Error"
+        class="notice notice-error hidden">
+      </div>
+
+
+      <div class="panel-actions">
+
+        <button
+          id="toStep2Btn"
+          class="btn btn-primary"
+          disabled>
+          Continue
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         STEP 2 : PROCESSING
+    ========================== -->
+
+    <section id="panel-2" class="panel">
+
+      <h1 class="panel-title">
+        Reading your file
+      </h1>
+
+      <p class="panel-lede">
+        Extracting text and running the analysis.
+        This is quick for PDFs, a little slower for scanned images.
+      </p>
+
+
+      <div class="process-box">
+
+        <div class="process-spinner"></div>
+
+        <p id="processStage" class="process-stage">
+          Uploading file…
+        </p>
+
+        <div class="process-track">
+
+          <div
+            id="processBar"
+            class="process-bar">
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="step2Error"
+        class="notice notice-error hidden">
+      </div>
+
+
+      <div class="panel-actions">
+
+        <button
+          id="backToStep1Btn"
+          class="btn btn-ghost hidden">
+          Choose a different file
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         STEP 3 : RESULTS
+    ========================== -->
+
+    <section id="panel-3" class="panel">
+
+      <h1 class="panel-title">
+        Here's how it reads
+      </h1>
+
+      <p class="panel-lede">
+        A readiness score, a rewritten caption, hashtag ideas,
+        platform-specific feedback, and the raw extracted text.
+      </p>
+
+
+      <!-- PLATFORM RESULT -->
+
+      <div class="platform-result">
+
+        <span class="platform-result-label">
+          Analyzed for
+        </span>
+
+        <span
+          id="resultPlatform"
+          class="platform-result-value">
+          Instagram
+        </span>
+
+      </div>
+
+
+      <!-- SCORE -->
+
+      <div class="score-block">
+
+        <div class="score-numbers">
+
+          <span
+            id="scoreValue"
+            class="score-value">
+            0
+          </span>
+
+          <span class="score-max">
+            / 100
+          </span>
+
+        </div>
+
+
+        <p
+          id="scoreBand"
+          class="score-band">
+          readiness
+        </p>
+
+
+        <div class="meter-track">
+
+          <div
+            id="meterFill"
+            class="meter-fill">
+          </div>
+
+        </div>
+
+
+        <ul
+          id="breakdownList"
+          class="breakdown-list">
+        </ul>
+
+      </div>
+
+
+      <!-- METRICS -->
+
+      <div
+        class="metrics-grid"
+        id="metricsGrid">
+      </div>
+
+
+      <!-- REWRITTEN CAPTION -->
+
+      <div class="result-section">
+
+        <div class="result-section-header">
+
+          <h2>
+            Rewritten caption
+          </h2>
+
+          <button
+            class="copy-btn"
+            data-copy-target="rewrittenCaption">
+            Copy
+          </button>
+
+        </div>
+
+        <div
+          id="rewrittenCaption"
+          class="caption-box">
+        </div>
+
+      </div>
+
+
+      <!-- HASHTAGS -->
+
+      <div class="result-section">
+
+        <div class="result-section-header">
+
+          <h2>
+            Hashtag ideas
+          </h2>
+
+          <button
+            id="copyAllHashtags"
+            class="copy-btn">
+            Copy all
+          </button>
+
+        </div>
+
+        <div
+          id="hashtagChips"
+          class="chip-row">
+        </div>
+
+      </div>
+
+
+      <!-- NOTES -->
+
+      <div class="result-section">
+
+        <h2>
+          Notes
+        </h2>
+
+        <ul
+          id="notesList"
+          class="notes-list">
+        </ul>
+
+      </div>
+
+
+      <!-- EXTRACTED TEXT -->
+
+      <div class="result-section">
+
+        <div class="result-section-header">
+
+          <h2>
+            Extracted text
+          </h2>
+
+          <div class="result-section-header-right">
+
+            <span
+              id="extractMethod"
+              class="badge">
+            </span>
+
+            <button
+              class="copy-btn"
+              data-copy-target="extractedText">
+              Copy
+            </button>
+
+          </div>
+
+        </div>
+
+        <pre
+          id="extractedText"
+          class="extracted-text">
+        </pre>
+
+      </div>
+
+
+      <div class="panel-actions">
+
+        <button
+          id="startOverBtn"
+          class="btn btn-secondary">
+          Analyze another post
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =========================
+       HISTORY DRAWER
+  ========================== -->
+
+  <div
+    id="historyOverlay"
+    class="overlay hidden">
+
+    <div
+      class="overlay-scrim"
+      id="historyScrim">
+    </div>
+
+
+    <aside class="drawer">
+
+      <div class="drawer-header">
+
+        <h2>
+          Past analyses
+        </h2>
+
+        <button
+          id="closeHistoryBtn"
+          class="icon-btn"
+          aria-label="Close">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="drawer-actions">
+
+        <button
+          id="clearHistoryBtn"
+          class="link-btn hidden">
+          Clear all
+        </button>
+
+      </div>
+
+
+      <div
+        id="historyList"
+        class="drawer-body">
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

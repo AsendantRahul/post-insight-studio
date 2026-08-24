@@ -1,0 +1,9 @@
+# Backend
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/server/data/logbook.json
+
+# General
+.DS_Store
+*.log
